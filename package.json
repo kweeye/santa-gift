@@ -1,0 +1,17 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
+    "start-server": "cd server && npm install && npm start",
+    "start-client": "cd client && npm install && npm start",
+    "build-server": "cd server && npm run build",
+    "build-client": "cd client && npm run build"
+  },
+  "dependencies": {
+    "concurrently": "^6.2.1"
+  },
+  "engines": {
+    "node": "16.19.0"
+  }
+}
