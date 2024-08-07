@@ -1,67 +1,105 @@
-# IMPORTANT! READ before starting
 
-By default for anonymous users (non logged in), your code and app will only remain on glitch.com for 5 days.
-In order to not lose your challenge, please create a glitch.com account and log in to glitch.com before proceeding.
+# Santa App
 
-The following README contains instructions to guide you through the coding challenge, please read them carefully.
+## Overview
+The Santa App allows children to submit their Christmas wishes to Santa. The app verifies if the child is registered and under 10 years old before accepting the request. The app also periodically sends emails to Santa with all pending requests.
 
-# JS coding challenge:
+## Features
+- **Form Submission**: Children can enter their ID and a message to Santa.
+- **Validation**: The server checks if the child is registered and under 10 years old.
+- **Error Handling**: Displays error messages for invalid submissions.
+- **Success Handling**: Displays a confirmation message if the request is valid.
+- **Email Notifications**: Sends emails to Santa with all pending requests every 15 seconds.
 
-## How to create and submit your app using glitch
+## Folder Structure
+```
+my-app/
+├── client/
+│   ├── public/
+│   │   ├── index.html
+│   │   └── ...
+│   ├── src/
+│   │   ├── components/
+│   │   ├── App.tsx
+│   │   ├── index.tsx
+│   │   └── ...
+│   ├── .env
+│   ├── package.json
+│   └── ...
+├── server/
+│   ├── src/
+│   │   ├── routes/
+│   │   ├── index.ts
+│   │   └── ...
+│   ├── dist/
+│   ├── tsconfig.json
+│   ├── package.json
+│   └── ...
+├── node_modules/
+├── package.json
+├── .gitignore
+└── README.md
+```
 
-1. **Login to glitch**: make sure you are logged in to glitch.com
+## Code Quality
+- **Readability**: The code is organized and well-commented, making it easy to understand. Functions and variables are named descriptively, indicating their purpose and usage.
+- **Use of Modern Syntax**: The project leverages modern JavaScript/TypeScript features such as ES6+ syntax, async/await for asynchronous operations, and ES6 modules for import/export. This makes the code concise and efficient.
+- **TypeScript**: The use of TypeScript enhances code quality by providing static typing, which helps in catching errors early during development and improving code maintainability.
 
-2. **Clone**: Go to this URL: https://glitch.com/~js-santa-app and click the `Remix your own` button to clone the code. This will copy all the code to a new, randomly generated URL (e.g. https://glitch.com/edit/#!/capable-toothpaste). This is your URL to code on, no other candidates will have this URL.
+## Does the App Work as Designed?
+- **Form Submission**: The web app allows children to enter their ID and a message to Santa. Upon submission, the server verifies if the child is registered and below 10 years old using the provided JSON data.
+- **Error Handling**: If the child is not registered or is older than 10 years, the app displays an appropriate error message.
+- **Success Handling**: If the child is eligible, the app displays a confirmation message indicating that the request has been received.
+- **Email Sending**: Every 15 seconds, the server sends an email with all pending requests to Santa. This email includes the child's username, address, and the message they submitted.
 
-3. **Code**: You can edit the code directly in the Glitch editor or use your editor of choice (VSCode, Sublime, etc) and copy paste the files into Glitch. Git import and export is also available in the Tools menu on the bottom left. How you edit the code is entirely up to you, so long as your finished work is viewable at the URL created in the previous step.
+## App Architecture
+- **Folder Structure**: The project is organized into client and server directories, separating the frontend and backend logic. Each directory has its own `node_modules` and `package.json` for managing dependencies.
+  - **Root Directory**: Contains the overall project configuration and scripts to run both client and server concurrently.
+  - **Client Directory**: Contains the React application, organized into `public` and `src` directories.
+    - **Public Directory**: Holds static files like `index.html`.
+    - **Src Directory**: Contains React components, main entry points, and other frontend logic.
+  - **Server Directory**: Contains the Express server code, organized into `src` and `dist` directories.
+    - **Src Directory**: Holds TypeScript source files, including route handlers and server setup.
+    - **Dist Directory**: Contains compiled JavaScript files from TypeScript.
+- **Configuration Management**: TypeScript configurations are managed using `tsconfig.json`.
 
-> **NOTE**: Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+## Documentation
+- **Why Packages Were Added or Changed**:
+  - **TypeScript**: Added to enable static typing, which improves code quality and maintainability.
+  - **Nodemailer**: Used to handle email sending functionality, making it easy to send emails from the server.
+  - **Express**: A minimal and flexible Node.js web application framework used for setting up the server and handling routes.
+  - **Body-parser**: Middleware for parsing incoming request bodies in a middleware before handling them.
+  - **Node-fetch**: A lightweight module that brings `window.fetch` to Node.js, used for making HTTP requests to fetch JSON data.
+  - **React-Scripts**: Provides a set of scripts and configuration used by Create React App for building and running the React application.
+  - **Concurrently**: Allows running multiple commands concurrently, useful for running both client and server with a single command.
+  - **@types Packages**: Type definitions for various libraries to ensure TypeScript compatibility and provide type safety.
 
-4. **Turn in**: When you finish coding, send your URL to us so we can review your code.
+## Running the Project
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   cd client
+   npm install
+   cd ../server
+   npm install
+   cd ..
+   ```
 
-## Objectives overview:
+2. **Build the Project**:
+   ```bash
+   cd client
+   npm run build
+   cd ../server
+   npx tsc
+   cd ..
+   ```
 
-The webapp should display a form for children to enter their id and a free text message to santa.
+3. **Start the Project**:
+   ```bash
+   npm start
+   ```
 
-When submitting the form, the server should check:
+## Configuration
+- **Client Port**: Configured in `client/.env` to run on port 3001.
+- **Server Port**: Configured in `server/src/index.ts` to run on port 3000.
 
-1.  that the child is registered
-2.  that the child is less than 10 years old.
-    To this purpose, the server can fetch user and profiles data in JSON format from:
-
-- https://raw.githubusercontent.com/alj-devops/santa-data/master/userProfiles.json
-- https://raw.githubusercontent.com/alj-devops/santa-data/master/users.json
-
-If the child is not registered (no match for the user id) or more than 10years old, the webapp should display a basic error page with an error message explaining the problem.\
-If the child is registered and less than 10 years old, the server should show a page indicating that the request has been received.
-
-Every 15seconds, the server should send an email with information on all pending (not yet sent) requests including:
-
-- child username (eg. charlie.brown)
-- child's address (eg. 219-1130, Ikanikeisaiganaibaai, Musashino-shi, Tokyo)
-- request free text as was input in the form
-
-Email sender should be set as do_not_reply@northpole.com, and sent to santa@northpole.com
-
-## Tips and detailed instructions:
-
-- Somebody started to work on the app, but left it unfinished and did not use any modern technology. We added React for you to have a clean base but feel free to use any other technology you might prefer.
-- The UI and UX of the application for this challenge is not the priority. The pages/email do not need to look good, as long as they convey the information effectively.
-- You should fetch the JSON data at every form submission (consider it as an API).
-- For the sake of the challenge, you can keep the requests in-memory only.
-- You are encouraged to select and use npm packages as needed (you can add packages by editing package.json, or using `npm install` from the glitch console).
-- To get an smtp server for emails, go to https://ethereal.email/ and click "Create Ethereal Account".\
-  This will give you an account (take note of your username and pwd if you need to re-logon later) and smtp server (actual emails do not get delivered).\
-  Go to https://ethereal.email/messages to see the emails that have been received by the smtp server.
-
-## Some things we will look for in your submission
-
-- Code quality (readability, use of modern syntax...)
-- Does the app work as designed (cf. objectives overview)
-- App architecture (folder structure, configuration management...)
-- Documentation (why did you choose to change or add a package...)
-
-## Tips on usage of glitch
-
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
-When your app is running, you can access logs and console using the "Tools" button at the bottom left.
